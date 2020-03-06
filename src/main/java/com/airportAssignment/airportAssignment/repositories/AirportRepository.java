@@ -1,0 +1,7 @@
+package com.airportAssignment.airportAssignment.repositories;
+
+import com.airportAssignment.airportAssignment.model.Airport;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AirportRepository extends JpaRepository<Airport, Long> {
+}
