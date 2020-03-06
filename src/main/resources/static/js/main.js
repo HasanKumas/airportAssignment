@@ -1,5 +1,7 @@
 var airplaneTable
 var airplaneId
+var airportTable
+var airportId
 function getAirplanes() {
     $.get('api/airplanes', function(airplanes){
         displayAirplanes(airplanes);
@@ -102,11 +104,78 @@ function removeAirplane() {
         }
     });
 }
+function getAirplanes() {
+    $.get('api/airplanes', function(airplanes){
+        displayAirplanes(airplanes);
+    });
+}
+
+function displayAirports(airports) {
+    $("#tablesAirorts").dataTable().fnDestroy();
+    airportTable = $("#tablesAirports").DataTable({
+            ajax: {
+                url: 'api/airports',
+                dataSrc:''
+            },
+            columns: [
+                {data: 'id'},
+                {data: 'name'},
+                {data: null, render: function(data, type, row){
+                return '<td><button class="delete" airportId=" ' + data.id+ ' " >delete</button>'}},
+                {data: null, render: function(data, type, row){
+                return '<td><button class="edit" airportId=" ' + data.id+ ' " >edit</button>'}}
+            ]
+        });
+
+     $('#tablesAirports').off().on( 'click', 'button.delete', function () {
+                    $('#exampleModal').modal('show');
+                     airportId = $(this).attr('airportId');
+             });
+     $('#tablesAirports').off().on( 'click', 'button.edit', function () {
+            airportId = $(this).attr('airportId');
+            changeAirport();
+     });
+     $("#okBtn").click(function() {
+                 removeAirport(airportId);
+                 $('#exampleModal').modal('hide');
+            });
+}
+
+function createAirport() {
+    var airportName = $('#airportNameInput').val();
+    if (!airportName) {
+        alert('The airport name should be set..');
+        return;
+    }
+
+    var airport = {
+            name: airportName
+    };
+    postAirport(airport);
+}
+
+function postAirport(airport){
+    var jsonAirport = JSON.stringify(airport);
+    $.ajax({
+        url: 'api/airports',
+        type: 'POST',
+        contentType: 'application/json',
+        data: jsonCourse,
+        success: function() {
+            alert('We created a new airport..');
+            $('#airportNameInput').val(" ")
+            getAirports()
+        },
+        error: function() {
+            alert('Something went wrong..');
+        }
+    });
+}
 $(document).ready(function () {
        $("#getAirplanesButton").click(getAirplanes);
-//       $("#getAirportsButton").click(getAirports);
+       $("#getAirportsButton").click(getAirports);
        $("#createAirplaneButton").click(createAirplane);
-//       $("#createAirportButton").click(createAirport);
+       $("#createAirportButton").click(createAirport);
         getAirplanes();
 
 });
