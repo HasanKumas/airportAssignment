@@ -1,0 +1,22 @@
+#formCheck {
+       background-color: gray;
+       font-size: 20px;
+       color:white;
+       font-weight: bold;
+}
+.tables {
+       background-color: gray;
+}
+#tablesAirports {
+       background-color: lightblue;
+}
+#tablesAirplanes {
+       background-color: lightblue;
+}
+
+#hiddenAirplaneForm{
+    display:none;
+}
+#hiddenAirportForm{
+    display:none;
+}
